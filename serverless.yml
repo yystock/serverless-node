@@ -1,0 +1,56 @@
+service: serverless-node
+frameworkVersion: "3"
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  websocketsApiName: websockets-chat
+  websocketsApiRouteSelectionExpression: $request.body.action # custom routes are selected by the value of the action property in the body
+  websocketsDescription: Serverless Websockets for Chat
+  environment:
+    DEBUG: ${env:DEBUG, 0}
+    STAGE: ${env:STAGE, "prod"}
+  iam:
+    role:
+      name: serverless-my-ssm-role-${env:STAGE, "prod"}
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action:
+            - "ssm:GetParameter"
+            - "ssm:GetParameters"
+            - "ssm:GetParametersByPath"
+            - "ssm:GetParameterHistory"
+            - "ssm:DescribeParameters"
+
+functions:
+  websocketsHandler:
+    handler: src/serverless-websocket.handler
+    events:
+      - websocket:
+          route: $default
+      - websocket:
+          route: $connect
+      - websocket:
+          route: $disconnect
+
+  api:
+    handler: src/index.handler
+    events:
+      - httpApi: "*"
+
+custom:
+  dotenv:
+    exclude:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+      - DATABASE_URL
+  serverlessPluginTypescript:
+    tsConfigFileLocation: "./tsconfig.json"
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-plugin-typescript

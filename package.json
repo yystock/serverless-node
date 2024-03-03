@@ -1,0 +1,44 @@
+{
+  "name": "serverless-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "serverless offline --stage dev",
+    "info": "serverless info --stage prod --region us-east-2",
+    "deploy": "serverless deploy --stage prod --region us-east-2",
+    "deploy-dev-stage": "serverless deploy --stage dev --region us-east-2",
+    "info-dev-stage": "serverless info --stage prod --region us-east-2",
+    "remove": "serverless remove --stage prod --region us-east-2",
+    "generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
+    "migrate": "tsx src/cli/migrator.ts",
+    "vercel-build": "echo 'hello'"
+  },
+  "dependencies": {
+    "@aws-sdk/client-api-gateway": "^3.525.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.525.0",
+    "@aws-sdk/client-lambda": "^3.525.0",
+    "@aws-sdk/client-ssm": "^3.525.0",
+    "@hono/node-server": "^1.8.2",
+    "@neondatabase/serverless": "^0.9.0",
+    "aws-lambda": "^1.0.7",
+    "drizzle-orm": "^0.29.4",
+    "hono": "^4.0.8",
+    "uuid": "^9.0.1",
+    "ws": "^8.16.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.134",
+    "@types/node": "^20.11.24",
+    "@types/uuid": "^9.0.8",
+    "@types/ws": "^8.5.10",
+    "dotenv": "^16.4.5",
+    "drizzle-kit": "^0.20.14",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-offline": "^13.3.3",
+    "serverless-plugin-typescript": "^2.1.5",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}
